@@ -42,7 +42,7 @@ export const authenticateFromLink = new Elysia().use(auth).get(
 
     await db.delete(authLinks).where(eq(authLinks.code, code.trim()))
 
-    return redirect(redirectTo)
+    // return redirect(redirectTo)
   },
   {
     query: t.Object({

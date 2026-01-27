@@ -1,7 +1,6 @@
 import jwt from '@elysiajs/jwt'
-import Elysia, { type Static, t } from 'elysia'
+import Elysia, { type Static, t, type Cookie } from 'elysia'
 import { env } from '../env'
-import cookie from '@elysiajs/cookie'
 
 const jwtPayload = t.Object({
   sub: t.String(),
@@ -15,23 +14,48 @@ export const auth = new Elysia()
       schema: jwtPayload,
     }),
   )
-  .use(cookie())
-  .derive({ as: 'global' }, ({ jwt, cookie, removeCookie }) => {
-    // Cookie jar returns a Cookie instance for any key at runtime.
-    const authCookie = cookie.auth!
+  .derive({ as: 'global' }, ({ jwt, cookie }) => {
+    const getAuthCookie = () => {
+      const authCookie = cookie.auth as Cookie<string> | undefined
+      if (!authCookie) {
+        throw new Error('Auth cookie jar not available.')
+      }
+      return authCookie
+    }
 
     return {
       signUser: async (payload: Static<typeof jwtPayload>) => {
         const token = await jwt.sign(payload)
 
-        authCookie.value = token
-        authCookie.httpOnly = true
-        authCookie.maxAge = 60 * 60 * 24 * 7 // 7 days
-        authCookie.path = '/'
+        getAuthCookie().set({
+          value: token,
+          httpOnly: true,
+          maxAge: 60 * 60 * 24 * 7, // 7 days
+          path: '/',
+        })
       },
 
       signOut: () => {
-        removeCookie('auth')
+        getAuthCookie().remove()
+      },
+
+      getCurrentUser: async () => {
+        const token = getAuthCookie().value
+
+        if (!token || typeof token !== 'string') {
+          throw new Error('Unauthorized.')
+        }
+
+        const payload = await jwt.verify(token)
+
+        if (!payload) {
+          throw new Error('Unauthorized.')
+        }
+
+        return {
+          userId: payload.sub,
+          restaurantId: payload.restaurantId,
+        }
       },
     }
   })
