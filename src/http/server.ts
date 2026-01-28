@@ -15,9 +15,9 @@ const app = new Elysia()
   .use(signOut)
   .use(getProfile)
   .use(getManagedRestaurant)
-  .onError(({ code, error, set}) => {
+  .onError(({ code, error, set }) => {
     switch (code) {
-      case 'VALIDATION' : {
+      case 'VALIDATION': {
         set.status = error.status
 
         return error.toResponse()

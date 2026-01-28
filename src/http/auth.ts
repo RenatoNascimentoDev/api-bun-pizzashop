@@ -9,14 +9,14 @@ const jwtPayload = t.Object({
 })
 
 export const auth = new Elysia()
-.error({
-  UNAUTHORIZED: UnauthorizedError,
-})
+  .error({
+    UNAUTHORIZED: UnauthorizedError,
+  })
   .onError(({ error, code, set }) => {
     switch (code) {
       case 'UNAUTHORIZED': {
-      set.status = 401
-      return { code, message: error.message }
+        set.status = 401
+        return { code, message: error.message }
       }
     }
   })
@@ -55,13 +55,13 @@ export const auth = new Elysia()
         const token = getAuthCookie().value
 
         if (!token || typeof token !== 'string') {
-          throw new UnauthorizedError
+          throw new UnauthorizedError()
         }
 
         const payload = await jwt.verify(token)
 
         if (!payload) {
-          throw new UnauthorizedError
+          throw new UnauthorizedError()
         }
 
         return {

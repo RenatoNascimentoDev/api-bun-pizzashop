@@ -35,17 +35,17 @@ export const sendAuthLink = new Elysia().post(
     authLink.searchParams.set('code', authLinkCode)
     authLink.searchParams.set('redirect', env.AUTH_REDIRECT_URL)
 
-   const info = await mail.sendMail({
-    from: {
-      name: 'Pizza Shop',
-      address: 'hi@pizzashop.com',
-    },
-    to: email,
-    subject: 'Authenticate to Pizza Shop',
-    text: `Use the following link to authenticate on Pizza Shop: ${authLink.toString()}`,
-   })
+    const info = await mail.sendMail({
+      from: {
+        name: 'Pizza Shop',
+        address: 'hi@pizzashop.com',
+      },
+      to: email,
+      subject: 'Authenticate to Pizza Shop',
+      text: `Use the following link to authenticate on Pizza Shop: ${authLink.toString()}`,
+    })
 
-   console.log(nodemailer.getTestMessageUrl(info))
+    console.log(nodemailer.getTestMessageUrl(info))
   },
   {
     body: t.Object({

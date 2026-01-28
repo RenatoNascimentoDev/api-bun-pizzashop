@@ -15,7 +15,7 @@ export const getProfile = new Elysia()
     })
 
     if (!user) {
-      throw new UnauthorizedError
+      throw new UnauthorizedError()
     }
 
     return user

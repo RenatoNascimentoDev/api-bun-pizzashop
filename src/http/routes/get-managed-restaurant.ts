@@ -12,9 +12,9 @@ export const getManagedRestaurant = new Elysia()
     }
 
     const managedRestaurant = await db.query.restaurants.findFirst({
-        where(fields, { eq }) {
-            return eq(fields.id, restaurantId)
-        }
+      where(fields, { eq }) {
+        return eq(fields.id, restaurantId)
+      },
     })
 
     return managedRestaurant

@@ -7,8 +7,8 @@ import { eq } from 'drizzle-orm'
 
 export const authenticateFromLink = new Elysia().use(auth).get(
   '/auth-links/authenticate',
-  async ({ query, signUser, redirect }) => {
-    const { code, redirect: redirectTo } = query
+  async ({ query, signUser }) => {
+    const { code } = query
 
     const authLinkFromCode = await db.query.authLinks.findFirst({
       where(fields, { eq }) {
