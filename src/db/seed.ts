@@ -1,7 +1,14 @@
 /* eslint-disable drizzle/enforce-delete-with-where */
 
 import { faker } from '@faker-js/faker'
-import { users, restaurants, orderItems, orders, products, authLinks } from './schema'
+import {
+  users,
+  restaurants,
+  orderItems,
+  orders,
+  products,
+  authLinks,
+} from './schema'
 import { db } from './connection'
 import chalk from 'chalk'
 import { createId } from '@paralleldrive/cuid2'
@@ -21,18 +28,21 @@ console.log(chalk.yellow('✔ Database reset!'))
 /**
  * Create custumers
  */
-const [customer1, customer2] = await db.insert(users).values([
-  {
-  name: faker.person.fullName(),
-  email: faker.internet.email(),
-  role: 'customer',
-  },
-  {
-  name: faker.person.fullName(),
-  email: faker.internet.email(),
-  role: 'customer',
-  },
-]).returning()
+const [customer1, customer2] = await db
+  .insert(users)
+  .values([
+    {
+      name: faker.person.fullName(),
+      email: faker.internet.email(),
+      role: 'customer',
+    },
+    {
+      name: faker.person.fullName(),
+      email: faker.internet.email(),
+      role: 'customer',
+    },
+  ])
+  .returning()
 
 console.log(chalk.yellow('✔ Created manager!'))
 
@@ -57,18 +67,21 @@ console.log(chalk.yellow('✔ Created restaurants!'))
 /**
  * Create restaurants
  */
-const [restaurant] = await db.insert(restaurants).values([
-  {
-    name: faker.company.name(),
-    description: faker.lorem.paragraph(),
-    managerId: manager!.id,
-  },
-]).returning()
+const [restaurant] = await db
+  .insert(restaurants)
+  .values([
+    {
+      name: faker.company.name(),
+      description: faker.lorem.paragraph(),
+      managerId: manager!.id,
+    },
+  ])
+  .returning()
 
 console.log(chalk.yellow('✔ Created restaurants!'))
 
 function generateProduct() {
-  return  {
+  return {
     name: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
     restaurantId: restaurant!.id,
@@ -113,7 +126,7 @@ for (let i = 0; i < 200; i++) {
 
   let totalInCents = 0
 
-  orderProducts.forEach(orderProduct => {
+  orderProducts.forEach((orderProduct) => {
     const quantity = faker.number.int({ min: 1, max: 3 })
 
     totalInCents += orderProduct.priceInCents * quantity
@@ -127,7 +140,7 @@ for (let i = 0; i < 200; i++) {
   })
 
   ordersToInsert.push({
-    id: orderId, 
+    id: orderId,
     customerId: faker.helpers.arrayElement([customer1!.id, customer2!.id]),
     restaurantId: restaurant!.id,
     totalInCents,
@@ -136,7 +149,7 @@ for (let i = 0; i < 200; i++) {
       'processing',
       'delivering',
       'delivered',
-      'canceled'
+      'canceled',
     ]),
     createdAt: faker.date.recent({ days: 40 }),
   })

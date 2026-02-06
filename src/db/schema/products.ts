@@ -3,7 +3,6 @@ import { createId } from '@paralleldrive/cuid2'
 import { relations } from 'drizzle-orm'
 import { orderItems, restaurants } from '.'
 
-
 export const products = pgTable('products', {
   id: text('id')
     .$defaultFn(() => createId())
