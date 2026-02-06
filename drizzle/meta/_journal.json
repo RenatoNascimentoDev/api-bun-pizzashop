@@ -43,6 +43,27 @@
       "when": 1769568629187,
       "tag": "0005_lethal_titania",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1770395620850,
+      "tag": "0006_wild_madrox",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1770400232625,
+      "tag": "0007_glorious_omega_sentinel",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1770400574944,
+      "tag": "0008_boring_bushwacker",
+      "breakpoints": true
     }
   ]
 }

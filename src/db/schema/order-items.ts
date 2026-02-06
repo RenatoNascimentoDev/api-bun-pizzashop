@@ -1,6 +1,6 @@
 import { text, pgTable, timestamp, pgEnum, integer } from 'drizzle-orm/pg-core'
 import { createId } from '@paralleldrive/cuid2'
-import { users, orders, products } from '.'
+import { orders, products } from '.'
 import { relations } from 'drizzle-orm'
 
 export const orderItems = pgTable('orders_items', {
@@ -14,7 +14,7 @@ export const orderItems = pgTable('orders_items', {
     }),
   productId: text('product_id')
     .notNull()
-    .references(() => users.id, {
+    .references(() => products.id, {
       onDelete: 'set null',
     }),
   priceInCents: integer('price_in_cents').notNull(),
